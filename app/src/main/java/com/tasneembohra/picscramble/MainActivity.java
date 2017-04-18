@@ -13,7 +13,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements PhotoApi.PhotoListener {
 
     private ImageAdapter mAdapter;
-    private List<String> mImageList;
     private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
 
@@ -29,8 +28,7 @@ public class MainActivity extends AppCompatActivity implements PhotoApi.PhotoLis
 
     @Override
     public void onSuccess(List<String> imageList) {
-        mImageList = imageList;
-        mAdapter = new ImageAdapter(mImageList, this);
+        mAdapter = new ImageAdapter(imageList, this);
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.postDelayed(new Runnable() {
@@ -47,6 +45,4 @@ public class MainActivity extends AppCompatActivity implements PhotoApi.PhotoLis
         mProgressBar.setVisibility(View.GONE);
         ((AppCompatTextView)findViewById(R.id.errorText)).setText("Error while loading image from Flikr.");
     }
-
-
 }

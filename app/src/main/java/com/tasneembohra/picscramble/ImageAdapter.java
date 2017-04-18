@@ -20,15 +20,15 @@ import java.util.Random;
  * Created by tasneem on 18/04/17.
  */
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHolder>{
+class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHolder>{
     private List<String> mImageList;
-    private boolean flip[];
     private Context mContext;
-    private int mIndex = -1;
     private Random mRandom;
+    private boolean flip[];
+    private int mIndex = -1;
     private int totalFlipped;
 
-    public ImageAdapter(List<String> imageList, Context context) {
+    ImageAdapter(List<String> imageList, Context context) {
         mImageList = imageList;
         mContext = context;
         flip = new boolean[imageList.size()];
@@ -55,6 +55,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHold
             }
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -83,6 +84,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHold
         }
     }
 
+    /**
+     * Flip all images
+     */
     void flipAllImages() {
         for (int i = 0 ; i < flip.length ; i ++) {
             flip[i] = true;
@@ -92,13 +96,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHold
         showImage();
     }
 
+
+    /**
+     * Get random index and display image
+     */
     private void showImage() {
         int index;
         while (true) {
             index = mRandom.nextInt(mImageList.size());
-            if (flip[index]) {
-                break;
-            }
+            if (flip[index]) break;
         }
         mIndex = index;
         final Dialog dialog = new Dialog(mContext);
@@ -111,7 +117,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ItemViewHold
                     .into((AppCompatImageView) dialog.findViewById(R.id.image));
         }
         dialog.show();
-
         dialog.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

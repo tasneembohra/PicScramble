@@ -1,7 +1,5 @@
 package com.tasneembohra.picscramble;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,29 +20,31 @@ import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 
 /**
+ *
  * Created by tasneem on 18/04/17.
  */
 
-public class PhotoApi {
-    PhotoListener mListener;
-    public interface PhotoListener {
+class PhotoApi {
+     private PhotoListener mListener;
+     private interface Api {
+        @GET("feeds/photos_public.gne")
+        Call<ResponseBody> getPhotos(@QueryMap Map<String, Object> params);
+     }
+     interface PhotoListener {
         void onSuccess(List<String> imageList);
         void onFailure();
     }
 
-    interface Api {
-        @GET("feeds/photos_public.gne")
-        Call<ResponseBody> getPhotos(@QueryMap Map<String, Object> params);
-    }
 
-    public PhotoApi(PhotoListener listener) {
+
+     PhotoApi(PhotoListener listener) {
         mListener = listener;
-    }
+     }
 
     /**
      * Fetch photos from flikr public api
      */
-    public void getPhotos() {
+     void getPhotos() {
         Map<String, Object> map = new HashMap<>();
         map.put("api_key", "4f342a11fcb7da275d8eadc90db3fbb3");
         map.put("format", "json");
@@ -60,7 +60,6 @@ public class PhotoApi {
                 if (response != null && response.isSuccessful() && response.body() != null) {
                     try {
                         JSONObject object = new JSONObject(response.body().string());
-                        Log.d("getPhotos", "onResponse: "+object);
                         JSONArray itemObjects = object.optJSONArray("items");
                         if (itemObjects != null && itemObjects.length() > 0) {
                             List<String> images = new ArrayList<>();
